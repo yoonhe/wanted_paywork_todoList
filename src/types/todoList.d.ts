@@ -7,5 +7,5 @@ interface ITodo {
   id: string;
   content: string;
   isCheck: boolean;
-  createdAt: Date;
+  createdAt: string;
 }

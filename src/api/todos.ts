@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-const requestGetTodos: () => Promise<ITodos> = async () => {
-  const response = await axios.get('/todos');
+const getTodos: () => Promise<ITodos> = async () => {
+  const response: AxiosResponse<ITodos> = await axios.get('/todos');
 
   return response.data;
 };
 
-export default requestGetTodos;
+export default getTodos;
