@@ -1,16 +1,30 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import { colorPallete } from 'utils/color';
+import { filterList } from './utils/filterList';
+import { useFilterList } from './hooks/useFilterList';
+import { TodoList } from 'pages/todos';
 
 interface ITaskBoard {
-  children: React.ReactChild;
-  topColor: 'yellow' | 'green';
   title: string;
-  count: number;
+  todos: ITodos;
+  topColor: 'yellow' | 'green';
+  type: TTodoFilter;
 }
 
-const TaskBoard: FC<ITaskBoard> = ({ children, topColor, title, count }) => {
+const TaskBoard: FC<ITaskBoard> = ({ topColor, title, type, todos }) => {
+  const [{ todoList, count }, setTodoList] = useFilterList({
+    initialTodos: todos,
+    type,
+  });
+
+  useEffect(() => {
+    const updateTodos = filterList({ list: todos.todoList, type });
+
+    setTodoList({ updateTodos });
+  }, [type, todos, setTodoList]);
+
   return (
     <Section topColor={topColor}>
       <Top>
@@ -19,7 +33,7 @@ const TaskBoard: FC<ITaskBoard> = ({ children, topColor, title, count }) => {
           <em>( {count} )</em>
         </h2>
       </Top>
-      {children}
+      <TodoList todos={todoList} />
     </Section>
   );
 };

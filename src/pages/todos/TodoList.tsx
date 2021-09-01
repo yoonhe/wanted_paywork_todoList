@@ -1,41 +1,19 @@
-import { FC, useEffect } from 'react';
-import styled from '@emotion/styled';
+import { FC } from 'react';
 
-import { requestTodos } from 'store/slice/todoListSlice';
-import { useAppDispatch, useAppSelector } from 'store/slice/hooks';
+import TodoListItem from './TodoListItem';
 
-import { TaskBoard, TodoListItem } from 'pages/todos';
+interface ITodoListProps {
+  todos: ITodo[];
+}
 
-const TodoList: FC = () => {
-  const {
-    todos: { count, todoList },
-  } = useAppSelector((store) => store.todoList);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(requestTodos());
-  }, []);
-
+const TodoList: FC<ITodoListProps> = ({ todos }) => {
   return (
-    <Container>
-      <TaskBoard topColor="yellow" title="Tasks" count={count}>
-        <ul>
-          {todoList?.map(({ id, content, isCheck }) => (
-            <TodoListItem key={id} content={content} isCheck={isCheck} />
-          ))}
-        </ul>
-      </TaskBoard>
-    </Container>
+    <ul>
+      {todos?.map(({ id, content, isCheck }) => (
+        <TodoListItem key={id} content={content} isCheck={isCheck} />
+      ))}
+    </ul>
   );
 };
-
-const Container = styled.main`
-  padding: 20px;
-
-  ul li + li {
-    margin-top: 20px;
-  }
-`;
 
 export default TodoList;

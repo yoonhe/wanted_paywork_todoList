@@ -1,6 +1,8 @@
+type TTodoFilter = 'incomplete' | 'complete';
+
 interface ITodos {
+  todoList: ITodo[];
   count: number;
-  todoList: todo[];
 }
 
 interface ITodo {

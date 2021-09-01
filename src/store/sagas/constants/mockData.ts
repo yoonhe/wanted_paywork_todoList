@@ -13,5 +13,11 @@ export const MOCK_DATA = {
       isCheck: false,
       createdAt: '2021-05-26T16:15:25.729Z',
     },
+    {
+      id: '3',
+      content: '독서',
+      isCheck: false,
+      createdAt: '2021-05-26T16:15:25.729Z',
+    },
   ],
 };
