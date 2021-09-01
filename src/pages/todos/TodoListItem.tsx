@@ -1,34 +1,31 @@
 import { FC } from 'react';
 import styled from '@emotion/styled';
-
-import { colorPallete } from 'utils/color';
 import { CgCheckO } from 'react-icons/cg';
 
+import { colorPallete } from 'utils/color';
+
 interface ITodoListItem {
-  content: 'string';
+  content: string;
   isCheck: boolean;
 }
 
-const TodoListItem: FC<ITodoListItem> = ({ content, isCheck }) => {
-  return (
-    <Item isCheck={isCheck}>
-      <Top>{content}</Top>
-      <Bottom>
-        <p></p>
-        <p>
-          <Button type="button" isCheck={isCheck}>
-            <CgCheckO />
-          </Button>
-        </p>
-      </Bottom>
-    </Item>
-  );
-};
+const TodoListItem: FC<ITodoListItem> = ({ content, isCheck }) => (
+  <Item>
+    <Top>{content}</Top>
+    <Bottom>
+      <p></p>
+      <p>
+        <Button type="button" isCheck={isCheck}>
+          <CgCheckO />
+        </Button>
+      </p>
+    </Bottom>
+  </Item>
+);
 
-const Item = styled.li<IButtonStyle>`
+const Item = styled.li`
   border: 1px solid ${colorPallete.gray};
   border-radius: 10px;
-  opacity: ${({ isCheck }) => isCheck && 0.8};
 `;
 
 const Top = styled.div`
@@ -49,10 +46,6 @@ const Button = styled.button<IButtonStyle>`
     isCheck ? `${colorPallete.green}` : `${colorPallete.gray}`};
   font-size: 30px;
 `;
-
-interface IButtonStyle {
-  isCheck: boolean;
-}
 
 interface IButtonStyle {
   isCheck: boolean;

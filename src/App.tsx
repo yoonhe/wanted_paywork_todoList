@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { worker } from 'mockServer/browser';
 import { BASE_URL } from 'api/constants/url';
-import { TodoList } from 'pages/todos';
+import { TodoListWrap } from 'pages/todos';
 import reset from 'styles/reset';
 
 worker.start();
@@ -15,7 +15,7 @@ const App: FC = () => {
   return (
     <>
       <Global styles={reset} />
-      <TodoList />
+      <TodoListWrap />
     </>
   );
 };
