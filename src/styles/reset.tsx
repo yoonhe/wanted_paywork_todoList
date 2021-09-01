@@ -15,6 +15,12 @@ const reset = css`
     text-decoration: none;
     color: initial;
   }
+  em {
+    font-style: normal;
+  }
+  li {
+    list-style: none;
+  }
 `;
 
 export default reset;
