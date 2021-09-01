@@ -21,8 +21,8 @@ const TodoList: FC = () => {
     <Container>
       <TaskBoard topColor="yellow" title="Tasks" count={count}>
         <ul>
-          {todoList?.map(({ id, content }) => (
-            <TodoListItem key={id} content={content} />
+          {todoList?.map(({ id, content, isCheck }) => (
+            <TodoListItem key={id} content={content} isCheck={isCheck} />
           ))}
         </ul>
       </TaskBoard>
@@ -32,6 +32,10 @@ const TodoList: FC = () => {
 
 const Container = styled.main`
   padding: 20px;
+
+  ul li + li {
+    margin-top: 20px;
+  }
 `;
 
 export default TodoList;
