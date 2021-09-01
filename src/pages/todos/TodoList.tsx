@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import { requestTodos } from 'store/slice/todoListSlice';
 import { useAppDispatch, useAppSelector } from 'store/slice/hooks';
 
-import TaskBoard from './TaskBoard';
+import { TaskBoard, TodoListItem } from 'pages/todos';
 
-const Todos: FC = () => {
+const TodoList: FC = () => {
   const {
     todos: { count, todoList },
   } = useAppSelector((store) => store.todoList);
@@ -22,7 +22,7 @@ const Todos: FC = () => {
       <TaskBoard topColor="yellow" title="Tasks" count={count}>
         <ul>
           {todoList?.map(({ id, content }) => (
-            <li key={id}>{content}</li>
+            <TodoListItem key={id} content={content} />
           ))}
         </ul>
       </TaskBoard>
@@ -34,4 +34,4 @@ const Container = styled.main`
   padding: 20px;
 `;
 
-export default Todos;
+export default TodoList;
