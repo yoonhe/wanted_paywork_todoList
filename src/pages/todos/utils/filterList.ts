@@ -10,8 +10,8 @@ export const filterList = ({
     complete: ({ isCheck }: { isCheck: boolean }) => isCheck === true,
   };
 
-  const todoList = list.filter(callbacks[type]);
-  const count = todoList.length;
+  const todoList = list?.filter(callbacks[type]);
+  const count = todoList?.length;
 
   return {
     todoList,

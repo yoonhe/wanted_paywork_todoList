@@ -3,8 +3,13 @@ import styled from '@emotion/styled';
 
 import { colorPallete } from 'utils/color';
 import { filterList } from './utils/filterList';
-import { useFilterList } from './hooks/useFilterList';
+
 import { TodoList } from 'pages/todos';
+
+import { useFilterList } from './hooks/useFilterList';
+import { useAppDispatch } from 'store/slice/hooks';
+
+import { requestCheckTodo } from 'store/slice/todoListSlice';
 
 interface ITaskBoard {
   title: string;
@@ -14,10 +19,16 @@ interface ITaskBoard {
 }
 
 const TaskBoard: FC<ITaskBoard> = ({ topColor, title, type, todos }) => {
+  const dispatch = useAppDispatch();
+
   const [{ todoList, count }, setTodoList] = useFilterList({
     initialTodos: todos,
     type,
   });
+
+  const handleCheckClick = ({ id, isCheck }: IRequestCheckTodoPayload) => {
+    dispatch(requestCheckTodo({ id, isCheck }));
+  };
 
   useEffect(() => {
     const updateTodos = filterList({ list: todos.todoList, type });
@@ -33,7 +44,7 @@ const TaskBoard: FC<ITaskBoard> = ({ topColor, title, type, todos }) => {
           <em>( {count} )</em>
         </h2>
       </Top>
-      <TodoList todos={todoList} />
+      <TodoList todos={todoList} onCheckClick={handleCheckClick} />
     </Section>
   );
 };
