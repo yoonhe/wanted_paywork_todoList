@@ -1,27 +1,24 @@
 import { AxiosError } from 'axios';
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { put, takeLatest, call, fork, all } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { getTodos, postCheckTodo } from 'api/todos';
 import { IPostCheckTodoResponse } from 'api/types/response';
 
-import { MOCK_DATA } from './constants/mockData';
-
 import {
+  requestCheckTodo,
   requestCheckTodoFailure,
   requestCheckTodoSuccess,
+  requestTodos,
   requestTodosFailure,
   requestTodosSuccess,
 } from 'store/slice/todoListSlice';
 
-function* requestCheckTodo({
-  payload: { id, isCheck },
+function* postCheckTodosList({
+  payload,
 }: PayloadAction<IRequestCheckTodoPayload>) {
   try {
-    const response: IPostCheckTodoResponse = yield call(postCheckTodo, {
-      id,
-      isCheck,
-    });
+    const response: IPostCheckTodoResponse = yield call(postCheckTodo, payload);
 
     yield put(requestCheckTodoSuccess(response));
   } catch (e) {
@@ -29,26 +26,26 @@ function* requestCheckTodo({
   }
 }
 
-function* requestTodoList() {
+function* watchPostCheckTodosList() {
+  yield takeLatest(requestCheckTodo.type, postCheckTodosList);
+}
+
+function* getTodosList() {
   try {
-    const todos: ITodos = yield call(getTodos);
+    const response: ITodos = yield call(getTodos);
 
-    if (!todos) {
-      localStorage.setItem('todos', JSON.stringify(MOCK_DATA));
-
-      yield put(requestTodosSuccess(MOCK_DATA));
-      return;
-    }
-
-    yield put(requestTodosSuccess(todos));
+    yield put(requestTodosSuccess(response));
   } catch (e) {
     yield put(requestTodosFailure((e as AxiosError).response?.data));
   }
 }
 
+function* watchGetTodosList() {
+  yield takeLatest(requestTodos.type, getTodosList);
+}
+
 function* todoListSaga() {
-  yield takeLatest('todoList/requestTodos', requestTodoList);
-  yield takeLatest('todoList/requestCheckTodo', requestCheckTodo);
+  yield all([fork(watchGetTodosList), fork(watchPostCheckTodosList)]);
 }
 
 export default todoListSaga;
