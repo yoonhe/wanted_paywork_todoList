@@ -1,6 +1,4 @@
-import { AxiosError } from 'axios';
-import { put, takeLatest, call, fork, all } from 'redux-saga/effects';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { takeLatest, fork, all } from 'redux-saga/effects';
 
 import { getTodos, postCheckTodo } from 'api/todos';
 import { IPostCheckTodoResponse } from 'api/types/response';
@@ -13,31 +11,23 @@ import {
   requestTodosFailure,
   requestTodosSuccess,
 } from 'store/slice/todoListSlice';
+import { createSaga } from 'store/utils/fetchEntity';
 
-function* postCheckTodosList({
-  payload,
-}: PayloadAction<IRequestCheckTodoPayload>) {
-  try {
-    const response: IPostCheckTodoResponse = yield call(postCheckTodo, payload);
+const postCheckTodosList = createSaga<
+  IRequestCheckTodoPayload,
+  IPostCheckTodoResponse
+>({
+  entity: { success: requestCheckTodoSuccess, fail: requestCheckTodoFailure },
+  api: postCheckTodo,
+});
 
-    yield put(requestCheckTodoSuccess(response));
-  } catch (e) {
-    yield put(requestCheckTodoFailure((e as AxiosError).response?.data));
-  }
-}
+const getTodosList = createSaga<null, ITodos>({
+  entity: { success: requestTodosSuccess, fail: requestTodosFailure },
+  api: getTodos,
+});
 
 function* watchPostCheckTodosList() {
   yield takeLatest(requestCheckTodo.type, postCheckTodosList);
-}
-
-function* getTodosList() {
-  try {
-    const response: ITodos = yield call(getTodos);
-
-    yield put(requestTodosSuccess(response));
-  } catch (e) {
-    yield put(requestTodosFailure((e as AxiosError).response?.data));
-  }
 }
 
 function* watchGetTodosList() {
