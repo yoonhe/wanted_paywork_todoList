@@ -5,17 +5,23 @@ import { CgCheckO } from 'react-icons/cg';
 import { colorPallete } from 'utils/color';
 
 interface ITodoListItem {
+  id: string;
   content: string;
   isCheck: boolean;
+  onCheckClick: () => void;
 }
 
-const TodoListItem: FC<ITodoListItem> = ({ content, isCheck }) => (
+const TodoListItem: FC<ITodoListItem> = ({
+  content,
+  isCheck,
+  onCheckClick,
+}) => (
   <Item>
     <Top>{content}</Top>
     <Bottom>
       <p></p>
       <p>
-        <Button type="button" isCheck={isCheck}>
+        <Button type="button" isCheck={isCheck} onClick={onCheckClick}>
           <CgCheckO />
         </Button>
       </p>
@@ -45,6 +51,10 @@ const Button = styled.button<IButtonStyle>`
   color: ${({ isCheck }) =>
     isCheck ? `${colorPallete.green}` : `${colorPallete.gray}`};
   font-size: 30px;
+  cursor: pointer;
+  &:hover {
+    color: ${colorPallete.green};
+  }
 `;
 
 interface IButtonStyle {

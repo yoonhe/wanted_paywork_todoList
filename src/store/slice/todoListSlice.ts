@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IPostCheckTodoResponse } from 'api/types/response';
 import INIT_TODOS from 'store/sagas/constants/todos';
 
 const initialState: IinitialState = {
@@ -17,32 +18,47 @@ const counterSlice = createSlice({
     },
     requestTodosSuccess: (
       state,
-      { payload }: PayloadAction<ISuccessPayload>,
+      { payload }: PayloadAction<IRequestTodosSuccessPayload>,
     ) => {
       state.todos = payload;
 
       state.loading = false;
       state.error = '';
     },
-    requestTodoFailure: (state, { payload }) => {
+    requestTodosFailure: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    requestCheckTodo: (
+      state,
+      _action: PayloadAction<IRequestCheckTodoPayload>,
+    ) => {
+      state.loading = true;
+      state.error = '';
+    },
+    requestCheckTodoSuccess: (
+      state,
+      { payload }: PayloadAction<IPostCheckTodoResponse>,
+    ) => {
+      state.todos = payload.updateTodos;
+
+      state.loading = false;
+      state.error = '';
+    },
+    requestCheckTodoFailure: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
   },
 });
 
-export const { requestTodos, requestTodosSuccess, requestTodoFailure } =
-  counterSlice.actions;
+export const {
+  requestTodos,
+  requestTodosSuccess,
+  requestTodosFailure,
+  requestCheckTodo,
+  requestCheckTodoSuccess,
+  requestCheckTodoFailure,
+} = counterSlice.actions;
 
 export default counterSlice;
-
-interface IinitialState {
-  todos: ITodos;
-  loading: boolean;
-  error: string;
-}
-
-interface ISuccessPayload {
-  count: number;
-  todoList: ITodo[];
-}
