@@ -10,15 +10,15 @@ interface Entity<Success> {
   api: any;
 }
 
-export const createSaga = <Start, Success>({
+export const fetchEntity = <StartPayload, SuccessPayload>({
   entity,
   api,
-}: Entity<Success>) => {
+}: Entity<SuccessPayload>) => {
   const { success, fail } = entity;
 
-  return function* (action: PayloadAction<Start>) {
+  return function* (action: PayloadAction<StartPayload>) {
     try {
-      const response: Success = yield call(api, action.payload);
+      const response: SuccessPayload = yield call(api, action.payload);
 
       yield put(success(response));
     } catch (error) {

@@ -11,9 +11,10 @@ import {
   requestTodosFailure,
   requestTodosSuccess,
 } from 'store/slice/todoListSlice';
-import { createSaga } from 'store/utils/fetchEntity';
 
-const postCheckTodosList = createSaga<
+import { fetchEntity } from 'store/utils/saga';
+
+const postCheckTodosList = fetchEntity<
   IRequestCheckTodoPayload,
   IPostCheckTodoResponse
 >({
@@ -21,7 +22,7 @@ const postCheckTodosList = createSaga<
   api: postCheckTodo,
 });
 
-const getTodosList = createSaga<null, ITodos>({
+const getTodosList = fetchEntity<null, ITodos>({
   entity: { success: requestTodosSuccess, fail: requestTodosFailure },
   api: getTodos,
 });
