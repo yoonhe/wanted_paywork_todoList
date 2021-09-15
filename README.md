@@ -15,6 +15,15 @@
 - [x] 투두 리스트
 - [x] 투두 완료 체크
 
+
+## 구현 예정 기능
+### 투두 리스트 아이템
+- [ ] 추가
+- [ ] 삭제
+- [ ] 수정
+- [ ] 완료 체크
+- [ ] Drag and Drop 기능
+
 ## 시연
 ### 완료 체크
 https://user-images.githubusercontent.com/53102889/131779638-0ed362f0-362f-44b8-8c0b-3fc6d84d2ce3.mov
